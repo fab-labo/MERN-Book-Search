@@ -57,19 +57,6 @@ THEN that book is deleted from my saved books list
 WHEN I click on the Logout button
 THEN I am logged out of the site and presented with a menu with the options Search for Books and Login/Signup and an input field to search for books and a submit button  
 ```
-## Photos
-
-![MERN1](https://github.com/user-attachments/assets/bec97db2-aa7c-402f-8d9a-852efbf7f532)
-
-![MERN2](https://github.com/user-attachments/assets/02b7317b-f481-4840-aa3d-a03789b900ad)
-
-![MERN3](https://github.com/user-attachments/assets/0e691464-1aef-4bc2-896e-a28f4ef06748)
-
-![MERN4](https://github.com/user-attachments/assets/ade4db9f-5776-4e34-b1d9-f47955a87458)
-
-![MERN5](https://github.com/user-attachments/assets/d088626c-da8f-431a-bf18-fb7f3635ed09)
-
-
 
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
