@@ -5,7 +5,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import Navbar from './components/Navbar';
 
 const client = new ApolloClient({
-  uri: '/graphql',
+  uri: process.env.REACT_APP_GRAPHQL_URI || 'https://mern-book-search-0gt5.onrender.com/',
   cache: new InMemoryCache(),
 });
 
