@@ -5,9 +5,15 @@ const path = require('path');
 const { authMiddleware } = require('./utils/auth');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
+const cors = require('cors');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+
+app.use(cors({
+  origin: '*', // Allow all origins (change to frontend URL in production)
+  credentials: true,
+}));
 
 
 const server = new ApolloServer({
