@@ -11,39 +11,44 @@ const app = express();
 
 // Apollo Server setup
 const server = new ApolloServer({
-  // Log to check if the server is running
   typeDefs,
   resolvers,
 });
 
 const startApolloServer = async () => {
-  await server.start();
+  try {
+    await server.start();
 
-  app.use(express.json()); // to parse JSON bodies
-  app.use(express.urlencoded({ extended: true })); // to parse URL-encoded bodies
-  // Use Apollo Server's Express integration correctly with expressMiddleware
-  app.use("/graphql", expressMiddleware(server, 
-    { context: authMiddleware }
-  )); // This integrates Apollo Server with Express
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
 
-  // Serve static files in production
-  if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, "../client/dist")));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "../client/dist/index.html"));
-    });
-  }
+    // Apollo Server Middleware
+    app.use("/graphql", expressMiddleware(server, { context: authMiddleware }));
 
-  // Start the server once the database is connected
-  mongoose
-    .connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/googlebooks")
-    .then(() => {
-      app.listen(PORT, () => {
-        console.log(`API server running on port ${PORT}`);
-        console.log(`GraphQL at http://localhost:${PORT}/graphql`);
+    // Serve static frontend files in production
+    if (process.env.NODE_ENV === "production") {
+      console.log("Running in production mode... serving frontend");
+      app.use(express.static(path.join(__dirname, "../client/dist")));
+
+      app.get("*", (req, res) => {
+        res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
       });
-    })
-    .catch((err) => console.error("MongoDB connection error:", err));
+    } else {
+      console.log("Running in development mode...");
+    }
+
+    // Connect to MongoDB
+    await mongoose.connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/googlebooks");
+    console.log("✅ Connected to MongoDB");
+
+    // Start the server
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`📡 GraphQL available at http://localhost:${PORT}/graphql`);
+    });
+  } catch (error) {
+    console.error("❌ Server startup error:", error);
+  }
 };
 
 startApolloServer();
